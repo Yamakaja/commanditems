@@ -1,0 +1,18 @@
+group 'me.yamakaja.commanditems'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+}
+
+dependencies {
+    compile "org.spigotmc:spigot:1.11.2-R0.1-SNAPSHOT"
+}
