@@ -61,6 +61,12 @@ public class CommandAddCommand implements CommandExecutor, TabCompleter {
         List<String> lore = meta.getLore();
         if (lore == null)
             lore = new ArrayList<>();
+
+        if (!this.plugin.getCommandManager().getCommands().containsKey(args[0])) {
+            player.sendMessage(CommandItems.PREFIX + ChatColor.RED + "Unknown command set!");
+            return true;
+        }
+
         lore.add(ChatColor.BLACK + ChatColor.MAGIC.toString() + "\u00bb" + args[0]);
 
         meta.setLore(lore);

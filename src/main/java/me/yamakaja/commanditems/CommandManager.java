@@ -24,6 +24,7 @@ public class CommandManager implements Listener {
 
     private CommandItems plugin;
     private Map<String, List<String>> commands = new HashMap<>();
+    private boolean shiftRequired;
 
     public CommandManager(CommandItems plugin) {
         this.plugin = plugin;
@@ -37,13 +38,17 @@ public class CommandManager implements Listener {
         this.plugin.reloadConfig();
         FileConfiguration config = plugin.getConfig();
         commands.clear();
-        config.getKeys(false).forEach(key -> commands.put(key, config.getStringList(key)));
+        config.getKeys(false).stream().filter(key -> !key.equals("shift")).forEach(key -> commands.put(key, config.getStringList(key)));
+        this.shiftRequired = config.getBoolean("shift");
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if ((event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR)
                 || event.getItem() == null || event.getItem().getType() == Material.AIR)
+            return;
+
+        if (shiftRequired && !event.getPlayer().isSneaking())
             return;
 
         ItemStack item = event.getItem();
@@ -97,9 +102,8 @@ public class CommandManager implements Listener {
                 }
         );
 
-
         if (item.getAmount() == 1)
-            item = null;
+            item = new ItemStack(Material.AIR);
         else
             item.setAmount(item.getAmount() - 1);
 

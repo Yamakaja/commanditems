@@ -4,6 +4,9 @@
 #                                       #
 #########################################
 
+# Whether players have to shift while clicking for the command to activate
+shift: false
+
 # A command section can look like this:
 #
 # giveapple:
