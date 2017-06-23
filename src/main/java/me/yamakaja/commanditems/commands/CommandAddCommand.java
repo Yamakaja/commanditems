@@ -1,6 +1,7 @@
 package me.yamakaja.commanditems.commands;
 
 import me.yamakaja.commanditems.CommandItems;
+import me.yamakaja.commanditems.util.NMSUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -53,23 +54,18 @@ public class CommandAddCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        ItemMeta meta = itemInHand.getItemMeta();
-
-        if (meta == null)
-            meta = plugin.getServer().getItemFactory().getItemMeta(itemInHand.getType());
-
-        List<String> lore = meta.getLore();
-        if (lore == null)
-            lore = new ArrayList<>();
-
         if (!this.plugin.getCommandManager().getCommands().containsKey(args[0])) {
             player.sendMessage(CommandItems.PREFIX + ChatColor.RED + "Unknown command set!");
             return true;
         }
 
-        lore.add(ChatColor.BLACK + ChatColor.MAGIC.toString() + "\u00bb" + args[0]);
+        ItemMeta meta = itemInHand.getItemMeta();
 
-        meta.setLore(lore);
+        if (meta == null)
+            meta = plugin.getServer().getItemFactory().getItemMeta(itemInHand.getType());
+
+        NMSUtil.setNBTString(meta, "commands", args[0]);
+
         itemInHand.setItemMeta(meta);
 
         player.getInventory().setItemInMainHand(itemInHand);
