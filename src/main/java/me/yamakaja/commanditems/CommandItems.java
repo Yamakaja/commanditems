@@ -1,8 +1,6 @@
 package me.yamakaja.commanditems;
 
-import me.yamakaja.commanditems.commands.CommandAddCommand;
-import me.yamakaja.commanditems.commands.CommandRawMsg;
-import me.yamakaja.commanditems.commands.CommandReloadCommands;
+import me.yamakaja.commanditems.commands.CommandCMDI;
 import org.bstats.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
@@ -18,20 +16,15 @@ public class CommandItems extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        CommandAddCommand addCommand = new CommandAddCommand(this);
-
         Metrics metrics = new Metrics(this);
 
-        PluginCommand bukkitAddCommand = this.getCommand("addcommand");
+        CommandCMDI addCommand = new CommandCMDI(this);
+        PluginCommand bukkitAddCommand = this.getCommand("cmdi");
+
         bukkitAddCommand.setExecutor(addCommand);
         bukkitAddCommand.setTabCompleter(addCommand);
 
-        this.getCommand("rawmsg").setExecutor(new CommandRawMsg(this));
-        this.getCommand("cmireload").setExecutor(new CommandReloadCommands(this));
-
         this.saveDefaultConfig();
-
-
         this.commandManager = new CommandManager(this);
     }
 

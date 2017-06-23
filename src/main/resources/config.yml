@@ -11,15 +11,15 @@ shift: false
 #
 # giveapple:
 #  - "C~give {player} golden_apple 1 1"
-#  - "C~rawmsg {player} &aYou received a golden apple!"
+#  - "C~cmdi msg {player} &aYou received a golden apple!"
 #
 # Another example which will execute as the clicking player:
 
 sayhi:
  - "me clicked a weird item!"
- - "C~rawmsg {player} &8Boo!"
+ - "C~cmdi msg {player} &8Boo!"
 
-# Now you can add that command to an item using /addcommand sayhi
+# Now you can add that command to an item using /cmdi add sayhi
 #
 # Commands which should be executed by the player, but with op privileges, have to be prefixed with O~
 # WARNING: Letting players execute commands with op privileges obviously comes with security risks associated!

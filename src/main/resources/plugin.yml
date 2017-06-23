@@ -1,14 +1,21 @@
 name: CommandItems
 author: Yamakaja
 main: me.yamakaja.commanditems.CommandItems
-version: 1.0.2
+version: 1.1.0
 commands:
-  addcommand:
-    description: "Adds a command to an item"
-    usage: /<command> [command]
-  rawmsg:
-    description: "Send a message to a player"
-    usage: /<command> [target] [message]
-  cmireload:
-    description: "Reload CommandItems commands from config"
-    usage: /<command>
+  cmdi:
+    description: "CommandItems command"
+    usage: "/<command> help"
+permissions:
+  commanditems.*:
+    description: "Gives access to all commanditems permissions"
+    children:
+      commanditems.reload: true
+      commanditems.addcommand: true
+      commanditems.msg: true
+  commanditems.reload:
+    description: "Gives permission to reload the plugin"
+  commanditems.addcommand:
+    description: "Gives permission to add predefined commands to items"
+  commanditems.msg:
+    description: "Sends a raw message"
