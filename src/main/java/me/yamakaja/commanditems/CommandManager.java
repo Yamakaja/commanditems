@@ -95,7 +95,7 @@ public class CommandManager implements Listener {
         );
 
         if (item.getAmount() == 1)
-            item = new ItemStack(Material.AIR);
+            item = null;
         else
             item.setAmount(item.getAmount() - 1);
 
