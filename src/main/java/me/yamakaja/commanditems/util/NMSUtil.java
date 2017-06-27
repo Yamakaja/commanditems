@@ -6,6 +6,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 /**
@@ -13,11 +14,12 @@ import java.util.regex.Pattern;
  */
 public class NMSUtil {
 
+    private static final String NBT_KEY = "cmdi";
     private static String nmsVersion;
     private static Class<?> craftMetaItemClass;
     private static Class<?> nbtTagCompound;
 
-    private static Field internalDataField;
+    private static Field unhandledTagsField;
 
     private static Method setString;
     private static Method getString;
@@ -39,8 +41,8 @@ public class NMSUtil {
 
         try {
             if (craftMetaItemClass != null) {
-                internalDataField = craftMetaItemClass.getDeclaredField("internalTag");
-                internalDataField.setAccessible(true);
+                unhandledTagsField = craftMetaItemClass.getDeclaredField("unhandledTags");
+                unhandledTagsField.setAccessible(true);
             }
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
@@ -75,13 +77,9 @@ public class NMSUtil {
 
     public static void setNBTString(ItemMeta meta, String key, String value) {
         try {
-            Object tag = internalDataField.get(meta);
-            if (tag == null) {
-                tag = nbtTagCompound.newInstance();
-                internalDataField.set(meta, tag);
-            }
-
+            Object tag = nbtTagCompound.newInstance();
             setString.invoke(tag, key, value);
+            ((HashMap<String, Object>)unhandledTagsField.get(meta)).put(NBT_KEY, tag);
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
         }
@@ -89,10 +87,7 @@ public class NMSUtil {
 
     public static String getNBTString(ItemMeta meta, String key) {
         try {
-            Object tag = internalDataField.get(meta);
-            if (tag == null)
-                return null;
-
+            Object tag = ((HashMap<String, Object>)unhandledTagsField.get(meta)).get(NBT_KEY);
             return (String) getString.invoke(tag, key);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
