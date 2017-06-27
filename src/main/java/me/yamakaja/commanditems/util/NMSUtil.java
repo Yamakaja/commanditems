@@ -6,7 +6,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -79,7 +79,7 @@ public class NMSUtil {
         try {
             Object tag = nbtTagCompound.newInstance();
             setString.invoke(tag, key, value);
-            ((HashMap<String, Object>)unhandledTagsField.get(meta)).put(NBT_KEY, tag);
+            ((Map<String, Object>)unhandledTagsField.get(meta)).put(NBT_KEY, tag);
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
         }
@@ -87,7 +87,7 @@ public class NMSUtil {
 
     public static String getNBTString(ItemMeta meta, String key) {
         try {
-            Object tag = ((HashMap<String, Object>)unhandledTagsField.get(meta)).get(NBT_KEY);
+            Object tag = ((Map<String, Object>)unhandledTagsField.get(meta)).get(NBT_KEY);
 
             if (tag == null)
                 return null;
