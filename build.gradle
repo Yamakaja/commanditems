@@ -1,5 +1,5 @@
 group 'me.yamakaja.commanditems'
-version '1.1.0'
+version '1.2.0'
 
 buildscript {
     repositories {
@@ -15,6 +15,14 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+processResources {
+    filesMatching("**/plugin.yml") {
+        filter {
+            it.replace('@version@', project.getVersion())
+        }
+    }
+}
 
 repositories {
     mavenCentral()

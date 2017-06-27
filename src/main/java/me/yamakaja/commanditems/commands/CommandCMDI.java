@@ -1,6 +1,7 @@
 package me.yamakaja.commanditems.commands;
 
 import me.yamakaja.commanditems.CommandItems;
+import me.yamakaja.commanditems.util.NMSUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -103,18 +104,20 @@ public class CommandCMDI implements CommandExecutor, TabCompleter {
     }
 
     private void processAdd(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("commanditems.add")) {
-            sender.sendMessage(CommandItems.PREFIX + NO_PERM_MESSAGE);
+        if (!sender.hasPermission("commanditems.admin")) {
+            sender.sendMessage(CommandItems.PREFIX + ChatColor.RED + "You don't have permission to use this command!\n" +
+                    CommandItems.PREFIX + ChatColor.RED + "This incident will be reported!"); // ;)
+
             return;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(CommandItems.PREFIX + ChatColor.RED + "Only players may use this subcommand!");
+            sender.sendMessage(CommandItems.PREFIX + ChatColor.RED + "Only players may use this command!");
             return;
         }
 
-        if (args.length < 2) {
-            sender.sendMessage(CommandItems.PREFIX + ChatColor.RED + "No command provided!");
+        if (args.length == 1) {
+            sender.sendMessage(CommandItems.PREFIX + ChatColor.RED + "No command-set provided!");
             return;
         }
 
@@ -126,34 +129,29 @@ public class CommandCMDI implements CommandExecutor, TabCompleter {
             return;
         }
 
+        if (!this.plugin.getCommandManager().getCommands().containsKey(args[1])) {
+            player.sendMessage(CommandItems.PREFIX + ChatColor.RED + "Unknown command-set!");
+            return;
+        }
+
         ItemMeta meta = itemInHand.getItemMeta();
 
         if (meta == null)
             meta = plugin.getServer().getItemFactory().getItemMeta(itemInHand.getType());
 
-        List<String> lore = meta.getLore();
-        if (lore == null)
-            lore = new ArrayList<>();
+        NMSUtil.setNBTString(meta, "commands", args[1]);
 
-        if (!this.plugin.getCommandManager().getCommands().containsKey(args[1])) {
-            player.sendMessage(CommandItems.PREFIX + ChatColor.RED + "Unknown command set!");
-            return;
-        }
-
-        lore.add(ChatColor.BLACK + ChatColor.MAGIC.toString() + "\u00bb" + args[1]);
-
-        meta.setLore(lore);
         itemInHand.setItemMeta(meta);
 
         player.getInventory().setItemInMainHand(itemInHand);
         player.updateInventory();
-        player.sendMessage(CommandItems.PREFIX + ChatColor.GOLD + "Successfully applied command set to item!");
+        player.sendMessage(CommandItems.PREFIX + ChatColor.GOLD + "Successfully applied command-set to item!");
     }
 
     private void sendHelp(CommandSender s) {
         s.sendMessage(ChatColor.GOLD + "List of subcommands:");
         s.sendMessage(" - " + ChatColor.YELLOW + "help     " + ChatColor.AQUA + "Shows this help");
-        s.sendMessage(" - " + ChatColor.YELLOW + "add      " + ChatColor.AQUA + "Adds a command set to an item");
+        s.sendMessage(" - " + ChatColor.YELLOW + "add      " + ChatColor.AQUA + "Adds a command-set to an item");
         s.sendMessage(" - " + ChatColor.YELLOW + "reload  " + ChatColor.AQUA + "Reloads configs");
         s.sendMessage(" - " + ChatColor.YELLOW + "msg      " + ChatColor.AQUA + "Sends a raw message to players");
     }

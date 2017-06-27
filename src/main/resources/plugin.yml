@@ -1,7 +1,7 @@
 name: CommandItems
 author: Yamakaja
 main: me.yamakaja.commanditems.CommandItems
-version: 1.1.0
+version: @version@
 commands:
   cmdi:
     description: "CommandItems command"

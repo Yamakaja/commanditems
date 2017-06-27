@@ -1,5 +1,6 @@
 package me.yamakaja.commanditems;
 
+import me.yamakaja.commanditems.util.NMSUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -58,20 +59,11 @@ public class CommandManager implements Listener {
 
         ItemMeta meta = item.getItemMeta();
 
-        if (!meta.hasLore())
+        String commands = NMSUtil.getNBTString(meta, "commands");
+        if (commands == null)
             return;
 
-        List<String> lore = meta.getLore();
-
-        if (lore.size() == 0)
-            return;
-
-        String commandSelectorLine = lore.get(lore.size() - 1);
-
-        if (!commandSelectorLine.startsWith(ChatColor.BLACK.toString() + ChatColor.MAGIC.toString() + "\u00bb"))
-            return;
-
-        List<String> commandList = this.commands.get(commandSelectorLine.substring(5));
+        List<String> commandList = this.commands.get(commands);
         commandList.stream().map(s -> s.replace("{player}", event.getPlayer().getName())).forEach(
                 command -> {
                     if (command.startsWith("C~")) {
