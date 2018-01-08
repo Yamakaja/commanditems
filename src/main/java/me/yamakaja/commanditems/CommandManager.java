@@ -1,11 +1,13 @@
 package me.yamakaja.commanditems;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import me.yamakaja.commanditems.util.NMSUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -99,10 +101,18 @@ public class CommandManager implements Listener {
         else
             item.setAmount(item.getAmount() - 1);
 
-        if (event.getHand() == EquipmentSlot.HAND)
-            event.getPlayer().getInventory().setItemInMainHand(item);
-        else
-            event.getPlayer().getInventory().setItemInOffHand(item);
+        // I know ... it's a bit hacky ^^
+        try {
+            if (event.getHand() == EquipmentSlot.HAND)
+                event.getPlayer().getInventory().setItemInMainHand(item);
+            else
+                event.getPlayer().getInventory().setItemInOffHand(item);
+        } catch (NoSuchMethodError e) {
+            //noinspection deprecation
+            event.getPlayer().getInventory().setItemInHand(item);
+        }
+
+        event.setCancelled(true);
     }
 
     public Map<String, List<String>> getCommands() {

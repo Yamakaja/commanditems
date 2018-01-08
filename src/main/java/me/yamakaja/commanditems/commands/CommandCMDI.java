@@ -122,7 +122,7 @@ public class CommandCMDI implements CommandExecutor, TabCompleter {
         }
 
         Player player = (Player) sender;
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        ItemStack itemInHand = player.getInventory().getItemInHand();
 
         if (itemInHand == null || itemInHand.getType() == Material.AIR) {
             player.sendMessage(CommandItems.PREFIX + ChatColor.RED + "Please take an item into your main hand!");
@@ -143,7 +143,7 @@ public class CommandCMDI implements CommandExecutor, TabCompleter {
 
         itemInHand.setItemMeta(meta);
 
-        player.getInventory().setItemInMainHand(itemInHand);
+        player.getInventory().setItemInHand(itemInHand);
         player.updateInventory();
         player.sendMessage(CommandItems.PREFIX + ChatColor.GOLD + "Successfully applied command-set to item!");
     }
