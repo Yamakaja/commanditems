@@ -66,7 +66,9 @@ public class CommandManager implements Listener {
             return;
 
         List<String> commandList = this.commands.get(commands);
-        commandList.stream().map(s -> s.replace("{player}", event.getPlayer().getName())).forEach(
+        commandList.stream()
+                .map(s -> s.replace("{player}", event.getPlayer().getName()))
+                .forEach(
                 command -> {
                     if (command.startsWith("C~")) {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),
@@ -75,24 +77,19 @@ public class CommandManager implements Listener {
                     }
 
                     if (command.startsWith("O~")) {
-                        Player player = event.getPlayer();
-                        boolean wasOp = player.isOp();
+                        boolean wasOp = event.getPlayer().isOp();
 
                         try {
-                            Bukkit.dispatchCommand(player,
-                                    command.substring(2));
-                        } catch (Throwable throwable) {
-                            player.setOp(wasOp);
-                            throw throwable;
+                            event.getPlayer().setOp(true);
+                            Bukkit.dispatchCommand(event.getPlayer(), command.substring(2));
+                        } finally {
+                            event.getPlayer().setOp(wasOp);
                         }
-
-                        player.setOp(wasOp);
 
                         return;
                     }
 
-                    Bukkit.dispatchCommand(event.getPlayer(),
-                            command);
+                    Bukkit.dispatchCommand(event.getPlayer(), command);
                 }
         );
 
