@@ -1,10 +1,15 @@
 package me.yamakaja.commanditems;
 
-import me.yamakaja.commanditems.commands.CommandCMDI;
+import co.aikar.commands.InvalidCommandArgument;
+import co.aikar.commands.PaperCommandManager;
+import me.yamakaja.commanditems.data.ItemDefinition;
+import me.yamakaja.commanditems.interpreter.ItemExecutor;
+import me.yamakaja.commanditems.parser.ConfigManager;
 import org.bstats.Metrics;
 import org.bukkit.ChatColor;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.stream.Collectors;
 
 /**
  * Created by Yamakaja on 07.06.17.
@@ -12,24 +17,52 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class CommandItems extends JavaPlugin {
 
     public static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + "CommandItems" + ChatColor.DARK_GRAY + "] ";
-    private CommandManager commandManager;
+    private ConfigManager configManager;
+    private PaperCommandManager commandManager;
+    private ItemExecutor executor;
+    private CommandItemManager commandItemManager;
 
     @Override
     public void onEnable() {
-        Metrics metrics = new Metrics(this);
+        new Metrics(this);
 
-        CommandCMDI addCommand = new CommandCMDI(this);
-        PluginCommand bukkitAddCommand = this.getCommand("cmdi");
+        this.saveResource("config.yml", false);
 
-        bukkitAddCommand.setExecutor(addCommand);
-        bukkitAddCommand.setTabCompleter(addCommand);
+        this.configManager = new ConfigManager(this);
+        configManager.parse();
 
-        this.saveDefaultConfig();
-        this.commandManager = new CommandManager(this);
+        this.commandManager = new PaperCommandManager(this);
+
+        this.commandManager.getCommandContexts().registerContext(ItemDefinition.class, context -> {
+            ItemDefinition itemDef = this.configManager.getConfig().getItems().get(context.popFirstArg());
+
+            if (itemDef == null)
+                throw new InvalidCommandArgument("Unknown item definition!");
+
+            return itemDef;
+        });
+
+        this.commandManager.getCommandCompletions().registerCompletion("itemdefs", context -> this.configManager.getConfig().getItems().keySet().stream()
+                .filter(key -> key.toLowerCase().startsWith(context.getInput().toLowerCase()))
+                .collect(Collectors.toList()));
+
+        this.commandManager.registerCommand(new CommandCMDI(this));
+        this.commandManager.enableUnstableAPI("help");
+
+        this.executor = new ItemExecutor(this);
+        this.commandItemManager = new CommandItemManager(this);
     }
 
-    public CommandManager getCommandManager() {
-        return commandManager;
+    public ConfigManager getConfigManager() {
+        return this.configManager;
+    }
+
+    public ItemExecutor getExecutor() {
+        return executor;
+    }
+
+    public CommandItemManager getCommandItemManager() {
+        return commandItemManager;
     }
 
 }

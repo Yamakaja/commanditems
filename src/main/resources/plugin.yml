@@ -3,19 +3,19 @@ author: Yamakaja
 main: me.yamakaja.commanditems.CommandItems
 version: @version@
 commands:
-  cmdi:
-    description: "CommandItems command"
-    usage: "/<command> help"
-permissions:
-  commanditems.*:
-    description: "Gives access to all commanditems permissions"
-    children:
-      commanditems.reload: true
-      commanditems.addcommand: true
-      commanditems.msg: true
-  commanditems.reload:
-    description: "Gives permission to reload the plugin"
-  commanditems.addcommand:
-    description: "Gives permission to add predefined commands to items"
-  commanditems.msg:
-    description: "Sends a raw message"
+#   cmdi:
+#     description: "CommandItems command"
+#     usage: "/<command> help"
+# permissions:
+#   commanditems.*:
+#     description: "Gives access to all commanditems permissions"
+#     children:
+#       commanditems.reload: true
+#       commanditems.addcommand: true
+#       commanditems.msg: true
+#   commanditems.reload:
+#     description: "Gives permission to reload the plugin"
+#   commanditems.addcommand:
+#     description: "Gives permission to add predefined commands to items"
+#   commanditems.msg:
+#     description: "Sends a raw message"

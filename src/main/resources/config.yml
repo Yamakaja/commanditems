@@ -4,22 +4,44 @@
 #                                       #
 #########################################
 
-# Whether players have to shift while clicking for the command to activate
-shift: false
+# Note, item use requires the cmdi.item.<name> permission. I.e. to use the fly items you'll have to give the player cmdi.item.fly
 
-# A command section can look like this:
-#
-# giveapple:
-#  - "C~give {player} golden_apple 1 1"
-#  - "C~cmdi msg {player} &aYou received a golden apple!"
-#
-# Another example which will execute as the clicking player:
-
-sayhi:
- - "me clicked a weird item!"
- - "C~cmdi msg {player} &8Boo!"
-
-# Now you can add that command to an item using /cmdi add sayhi
-#
-# Commands which should be executed by the player, but with op privileges, have to be prefixed with O~
-# WARNING: Letting players execute commands with op privileges obviously comes with security risks associated!
+items:
+  fly:
+    item:
+      type: FEATHER
+      name: "&a&lFlight token"
+      lore: ["&1Click for 10 seconds of flight!", "&kRandom second line"]
+      glow: true
+    consumed: true
+    cooldown: 20
+    actions:
+      - { action: COMMAND, by: CONSOLE, value: "fly {player} on" }
+      - { action: MESSAGE, to: PLAYER, value: "&aFlight has been enabled!" }
+      - { action: REPEAT, from: 9, to: 1, increment: -1, delay: 20, period: 20, actions: [{ action: MESSAGE, to: PLAYER, value: "&a{i}s to go" }]}
+      - { action: WAIT, duration: 200, actions: [
+          { action: COMMAND, by: CONSOLE, value: "fly {player} off" },
+          { action: MESSAGE, to: PLAYER, value: "&cFlight has been disabled!" }
+        ]}
+  helpstick:
+    item:
+      type: STICK
+      name: "&a&lHelp Stick"
+      lore: ["&1Click to send a help request to moderators!"]
+      glow: true
+    consumed: false
+    cooldown: 60
+    actions:
+      - { action: MESSAGE, to: PERMISSION, perm: group.moderator, value: "&6{player} &arequested help!" }
+      - { action: MESSAGE, to: PLAYER, value: "&aModerators have been notified!" }
+  xpparty:
+    item:
+      type: EXP_BOTTLE
+      name: "&a&lEXP PARTY"
+    consumed: true
+    actions:
+      - { action: REPEAT, period: 1, delay: 0, from: 0, to: 99, actions: [
+          { action: ITER, what: ONLINE_PLAYERS, actions: [
+            { action: CALC, a: "{iter_locY}", b: "4", op: ADD, target: "y", actions: [
+              { action: COMMAND, by: CONSOLE, value: "minecraft:summon minecraft:xp_bottle {iter_locX} {y} {iter_locZ}" }]}]}]}
+      - { action: MESSAGE, to: EVERYBODY, value: "&a&l{player} has started an XP party!" }

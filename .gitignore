@@ -1,8 +1,15 @@
+# IntelliJ
 .idea/
 *.iml
-*~
-*swp
-.gradle/
-build/
 out/
 
+# Vim
+*~
+*swp
+
+# Gradle
+.gradle/
+build/
+
+# Test environment
+testenv/

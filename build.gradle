@@ -1,5 +1,5 @@
 group 'me.yamakaja.commanditems'
-version '1.2.4'
+version '2.0.0'
 
 buildscript {
     repositories {
@@ -30,14 +30,38 @@ repositories {
 
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
     maven { url "http://repo.bstats.org/content/repositories/releases/" }
+    maven { url = "https://repo.aikar.co/content/groups/aikar/" }
 }
 
 dependencies {
     compileOnly "org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT"
+
     compile "org.bstats:bstats-bukkit:1.1"
+
+    compile "co.aikar:acf-paper:0.5.0-SNAPSHOT"
+
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.9.0"
 }
 
 shadowJar {
     baseName = 'CommandItems'
-    relocate 'org.bstats', 'me.yamakaja.commanditems.bstats'
+
+    relocate 'org.bstats', 'me.yamakaja.commanditems.lib.org.bstats'
+
+    relocate 'co.aikar', 'me.yamakaja.commanditems.lib.co.aikar'
+    // relocate 'org.intellij', 'me.yamakaja.commanditems.lib.org.intellij'
+    // relocate 'org.jetbrains', 'me.yamakaja.commanditems.lib.org.jetbrains'
+    // relocate 'net.jodah', 'me.yamakaja.commanditems.lib.net.jodah'
+
+    // relocate 'org.yaml.snakeyaml', 'me.yamakaja.commanditems.lib.org.yaml.snakeyaml'
+    // relocate 'com.fasterxml', 'me.yamakaja.commanditems.lib.com.fasterxml'
+}
+
+task install(type: Copy) {
+    from("$rootDir/build/libs/") {
+        include "**/CommandItems-*.jar"
+    }
+    rename("([^-]*).*\\.jar", '$1.jar')
+    into "$rootDir/testenv/plugins/"
 }

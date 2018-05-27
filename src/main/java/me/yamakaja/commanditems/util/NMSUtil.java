@@ -96,6 +96,7 @@ public class NMSUtil {
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
