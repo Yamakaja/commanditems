@@ -10,18 +10,14 @@ import org.bukkit.ChatColor;
  */
 public class ActionMessage extends Action {
 
-    @JsonProperty("to")
     private MessageTarget target;
-
-    @JsonProperty(value = "message", required = true)
     private String message;
-
-    @JsonProperty("perm")
     private String permission;
 
-    public ActionMessage(@JsonProperty("action") ActionType type, @JsonProperty("to") MessageTarget target, @JsonProperty("value") String message, @JsonProperty("perm") String permission) {
+    public ActionMessage(@JsonProperty("action") ActionType type, @JsonProperty("to") MessageTarget target, @JsonProperty(value = "message", required = true) String message, @JsonProperty("perm") String permission) {
         super(type);
         this.target = target;
+
         if (target == null)
             this.target = MessageTarget.PLAYER;
 

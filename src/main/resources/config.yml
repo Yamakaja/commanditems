@@ -18,7 +18,7 @@ items:
     actions:
       - { action: COMMAND, by: CONSOLE, command: "fly {player} on" }
       - { action: MESSAGE, to: PLAYER, message: "&aFlight has been enabled!" }
-      - { action: REPEAT, from: 9, to: 1, increment: -1, delay: 20, period: 20, actions: [{ action: MESSAGE, to: PLAYER, value: "&a{i}s to go" }]}
+      - { action: REPEAT, from: 9, to: 1, increment: -1, delay: 20, period: 20, actions: [{ action: MESSAGE, to: PLAYER, message: "&a{i}s to go" }]}
       - { action: WAIT, duration: 200, actions: [
           { action: COMMAND, by: CONSOLE, command: "fly {player} off" },
           { action: MESSAGE, to: PLAYER, message: "&cFlight has been disabled!" }
