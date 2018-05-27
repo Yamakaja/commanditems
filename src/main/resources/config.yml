@@ -16,12 +16,12 @@ items:
     consumed: true
     cooldown: 20
     actions:
-      - { action: COMMAND, by: CONSOLE, value: "fly {player} on" }
-      - { action: MESSAGE, to: PLAYER, value: "&aFlight has been enabled!" }
+      - { action: COMMAND, by: CONSOLE, command: "fly {player} on" }
+      - { action: MESSAGE, to: PLAYER, message: "&aFlight has been enabled!" }
       - { action: REPEAT, from: 9, to: 1, increment: -1, delay: 20, period: 20, actions: [{ action: MESSAGE, to: PLAYER, value: "&a{i}s to go" }]}
       - { action: WAIT, duration: 200, actions: [
-          { action: COMMAND, by: CONSOLE, value: "fly {player} off" },
-          { action: MESSAGE, to: PLAYER, value: "&cFlight has been disabled!" }
+          { action: COMMAND, by: CONSOLE, command: "fly {player} off" },
+          { action: MESSAGE, to: PLAYER, message: "&cFlight has been disabled!" }
         ]}
   helpstick:
     item:
@@ -32,8 +32,8 @@ items:
     consumed: false
     cooldown: 60
     actions:
-      - { action: MESSAGE, to: PERMISSION, perm: group.moderator, value: "&6{player} &arequested help!" }
-      - { action: MESSAGE, to: PLAYER, value: "&aModerators have been notified!" }
+      - { action: MESSAGE, to: PERMISSION, perm: group.moderator, message: "&6{player} &arequested help!" }
+      - { action: MESSAGE, to: PLAYER, message: "&aModerators have been notified!" }
   xpparty:
     item:
       type: EXP_BOTTLE
@@ -43,5 +43,5 @@ items:
       - { action: REPEAT, period: 1, delay: 0, from: 0, to: 99, actions: [
           { action: ITER, what: ONLINE_PLAYERS, actions: [
             { action: CALC, a: "{iter_locY}", b: "4", op: ADD, target: "y", actions: [
-              { action: COMMAND, by: CONSOLE, value: "minecraft:summon minecraft:xp_bottle {iter_locX} {y} {iter_locZ}" }]}]}]}
-      - { action: MESSAGE, to: EVERYBODY, value: "&a&l{player} has started an XP party!" }
+              { action: COMMAND, by: CONSOLE, command: "minecraft:summon minecraft:xp_bottle {iter_locX} {y} {iter_locZ}" }]}]}]}
+      - { action: MESSAGE, to: EVERYBODY, message: "&a&l{player} has started an XP party!" }

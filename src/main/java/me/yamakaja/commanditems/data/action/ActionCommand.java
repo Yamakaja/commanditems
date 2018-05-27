@@ -13,7 +13,7 @@ public class ActionCommand extends Action {
     @JsonProperty(value = "by")
     private CommandMode commandMode = CommandMode.PLAYER;
 
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(required = true)
     private String command;
 
     @JsonProperty(value = "perm")

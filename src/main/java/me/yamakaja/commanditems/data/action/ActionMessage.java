@@ -11,9 +11,9 @@ import org.bukkit.ChatColor;
 public class ActionMessage extends Action {
 
     @JsonProperty("to")
-    private MessageTarget target = MessageTarget.PLAYER;
+    private MessageTarget target;
 
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "message", required = true)
     private String message;
 
     @JsonProperty("perm")
@@ -22,6 +22,9 @@ public class ActionMessage extends Action {
     public ActionMessage(@JsonProperty("action") ActionType type, @JsonProperty("to") MessageTarget target, @JsonProperty("value") String message, @JsonProperty("perm") String permission) {
         super(type);
         this.target = target;
+        if (target == null)
+            this.target = MessageTarget.PLAYER;
+
         this.message = ChatColor.translateAlternateColorCodes('&', message);
         this.permission = permission;
     }
@@ -43,6 +46,9 @@ public class ActionMessage extends Action {
                 break;
 
             case PERMISSION:
+                if (permission == null)
+                    throw new RuntimeException("[CMDI] Permission is null in permission mode!");
+
                 Bukkit.getOnlinePlayers().stream()
                         .filter(player -> player.hasPermission(this.permission))
                         .forEach(player -> player.sendMessage(message));

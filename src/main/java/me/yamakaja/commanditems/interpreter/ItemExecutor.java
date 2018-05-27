@@ -25,6 +25,8 @@ public class ItemExecutor {
 
         for (Action action : definition.getActions())
             action.process(context);
+
+        context.popFrame();
     }
 
 }
