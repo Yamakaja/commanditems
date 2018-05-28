@@ -21,7 +21,7 @@ public class ItemDefinition {
     @JsonProperty
     private Action[] actions;
 
-    @JsonProperty(defaultValue = "false")
+    @JsonProperty
     private boolean sneaking;
 
     public boolean isConsumed() {
