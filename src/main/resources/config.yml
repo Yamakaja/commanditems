@@ -39,6 +39,7 @@ items:
       type: EXP_BOTTLE
       name: "&a&lEXP PARTY"
     consumed: true
+    sneaking: true
     actions:
       - { action: REPEAT, period: 1, delay: 0, from: 0, to: 99, actions: [
           { action: ITER, what: ONLINE_PLAYERS, actions: [

@@ -101,15 +101,26 @@ public class InterpretationContext {
         char[] chars = input.toCharArray();
         StringBuilder outputBuilder = new StringBuilder();
 
+        boolean escaped = false;
+
         for (int i = 0; i < chars.length; i++) {
-            if (chars[i] != '{') {
+            if (escaped) {
+                outputBuilder.append(chars[i]);
+                escaped = false;
+                continue;
+            } else if (chars[i] == '\\') {
+                escaped = true;
+                continue;
+            }
+
+            if (escaped || chars[i] != '{') {
                 outputBuilder.append(chars[i]);
                 continue;
             }
 
             int end = input.indexOf('}', i);
             if (end == -1)
-                throw new RuntimeException("Unterminated curly brackets!");
+                throw new RuntimeException("Unterminated curly braces!");
 
             String localName = input.substring(i + 1, end);
             String local = this.resolveLocal(localName);

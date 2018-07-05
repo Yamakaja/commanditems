@@ -102,6 +102,7 @@ public class CommandItemManager implements Listener {
             return;
         }
 
+        event.setCancelled(true);
         if (itemDefinition.isSneaking() && !event.getPlayer().isSneaking())
             return;
 
@@ -114,8 +115,6 @@ public class CommandItemManager implements Listener {
             event.getPlayer().sendMessage(ChatColor.RED + "You can only use this item every " + getTimeString(itemDefinition.getCooldown()) + "!");
             return;
         }
-
-        event.setCancelled(true);
 
         if (itemDefinition.isConsumed()) {
             ItemStack[] contents = event.getPlayer().getInventory().getContents();

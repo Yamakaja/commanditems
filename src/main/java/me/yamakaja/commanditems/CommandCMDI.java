@@ -2,6 +2,8 @@ package me.yamakaja.commanditems;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.BukkitCommandIssuer;
+import co.aikar.commands.CommandHelp;
+import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.contexts.OnlinePlayer;
 import me.yamakaja.commanditems.data.ItemDefinition;
@@ -30,11 +32,13 @@ public class CommandCMDI extends BaseCommand {
         issuer.sendMessage(ChatColor.AQUA + "See " + ChatColor.GOLD + "/cmdi help" + ChatColor.AQUA + " for more information!");
     }
 
-    @Subcommand("help")
     @CommandPermission("cmdi.help")
+    @Syntax("[page]")
     @HelpCommand
-    public void onHelp(CommandSender issuer) {
-        this.showCommandHelp();
+    public void onHelp(CommandSender issuer, @Default("1") Integer page) {
+        CommandHelp commandHelp = this.getCommandHelp();
+        commandHelp.setPage(page);
+        commandHelp.showHelp();
     }
 
     @Subcommand("give")
@@ -42,7 +46,7 @@ public class CommandCMDI extends BaseCommand {
     @Syntax("<player> <item> [amount]")
     @CommandCompletion("@players @itemdefs")
     public void onGive(CommandSender issuer, OnlinePlayer player, ItemDefinition definition, @Default("1") Integer amount) {
-        ItemStack item = definition.getItem().clone();
+        ItemStack item = definition.getItem();
         item.setAmount(amount);
         Map<Integer, ItemStack> leftovers = player.player.getInventory().addItem(item);
 

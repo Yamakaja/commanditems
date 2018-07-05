@@ -33,7 +33,7 @@ public class ItemDefinition {
     }
 
     public ItemStack getItem() {
-        return this.item;
+        return this.item.clone();
     }
 
     public Action[] getActions() {
