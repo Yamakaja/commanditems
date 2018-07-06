@@ -113,7 +113,7 @@ public class InterpretationContext {
                 continue;
             }
 
-            if (escaped || chars[i] != '{') {
+            if (chars[i] != '{') {
                 outputBuilder.append(chars[i]);
                 continue;
             }
