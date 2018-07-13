@@ -1,5 +1,6 @@
 package me.yamakaja.commanditems;
 
+import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import me.yamakaja.commanditems.data.ItemDefinition;
@@ -17,9 +18,8 @@ import java.util.stream.Collectors;
  */
 public class CommandItems extends JavaPlugin {
 
-    public static final String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + "CommandItems" + ChatColor.DARK_GRAY + "] ";
     private ConfigManager configManager;
-    private PaperCommandManager commandManager;
+    private BukkitCommandManager commandManager;
     private ItemExecutor executor;
     private CommandItemManager commandItemManager;
 

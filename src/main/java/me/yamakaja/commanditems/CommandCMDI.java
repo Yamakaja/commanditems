@@ -56,4 +56,16 @@ public class CommandCMDI extends BaseCommand {
         issuer.sendMessage(ChatColor.GREEN + "Successfully gave " + player.player.getName() + " " + amount + " " + "command items!");
     }
 
+    @Subcommand("reload")
+    @CommandPermission("cmdi.reload")
+    public void onReload(CommandSender sender) {
+        try {
+            this.plugin.getConfigManager().parse();
+            sender.sendMessage(ChatColor.GREEN + "Successfully reloaded config!");
+        } catch (RuntimeException e) {
+            sender.sendMessage(ChatColor.RED + "Failed to read the configuration:");
+            sender.sendMessage(ChatColor.RED + e.getCause().getMessage());
+        }
+    }
+
 }

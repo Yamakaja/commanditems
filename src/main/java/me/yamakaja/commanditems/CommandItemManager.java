@@ -21,7 +21,7 @@ public class CommandItemManager implements Listener {
 
     private CommandItems plugin;
 
-    private Table<UUID, String, Long> cooldowns = HashBasedTable.create();
+    private Table<UUID, String, Long> lastUse = HashBasedTable.create();
 
     public CommandItemManager(CommandItems plugin) {
         this.plugin = plugin;
@@ -73,14 +73,14 @@ public class CommandItemManager implements Listener {
     }
 
     private boolean checkCooldown(Player player, String command, long duration) {
-        long cooldownEnd = 0;
-        if (this.cooldowns.contains(player.getUniqueId(), command))
-            cooldownEnd = this.cooldowns.get(player.getUniqueId(), command);
+        long lastUse = 0;
+        if (this.lastUse.contains(player.getUniqueId(), command))
+            lastUse = this.lastUse.get(player.getUniqueId(), command);
 
-        if (System.currentTimeMillis() < cooldownEnd)
+        if (System.currentTimeMillis() < lastUse + duration * 1000)
             return false;
 
-        this.cooldowns.put(player.getUniqueId(), command, System.currentTimeMillis() + duration * 1000L);
+        this.lastUse.put(player.getUniqueId(), command, System.currentTimeMillis());
         return true;
     }
 
