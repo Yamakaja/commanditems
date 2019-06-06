@@ -11,8 +11,8 @@ public class EnchantmentGlow extends EnchantmentWrapper {
 
     private static Enchantment glow;
 
-    public EnchantmentGlow(int id) {
-        super(id);
+    public EnchantmentGlow() {
+        super("enchantment_glow");
     }
 
     public static Enchantment getGlow() {
@@ -29,7 +29,7 @@ public class EnchantmentGlow extends EnchantmentWrapper {
             e.printStackTrace();
         }
 
-        glow = new EnchantmentGlow(187);
+        glow = new EnchantmentGlow();
         Enchantment.registerEnchantment(glow);
         return glow;
     }
