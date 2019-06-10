@@ -32,7 +32,6 @@ public class ItemStackDeserializer extends StdDeserializer<ItemStack> {
         List<String> lore = null;
         boolean glow = false;
         short damage = 0;
-        byte data = 0;
 
         while (p.nextToken() == JsonToken.FIELD_NAME) {
             switch (p.getCurrentName()) {
@@ -59,16 +58,15 @@ public class ItemStackDeserializer extends StdDeserializer<ItemStack> {
                 case "damage":
                     damage = (short) p.nextIntValue(0);
                     break;
-                case "data":
-                    data = (byte) p.nextIntValue(0);
-                    break;
             }
         }
 
         Preconditions.checkNotNull(material, "No material specified!");
 
-        ItemStack stack = new ItemStack(material, 1, damage, data);
+        ItemStack stack = new ItemStack(material, 1, damage);
         ItemMeta meta = stack.getItemMeta();
+
+        Preconditions.checkNotNull(meta, "ItemMeta is null! (Material: " + material + ")");
 
         if (name != null)
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
