@@ -24,6 +24,13 @@ public class ItemDefinition {
     @JsonProperty
     private boolean sneaking;
 
+    @JsonProperty
+private String alreadyUsed;
+
+public String getAlreadyUsed() {
+return alreadyUsed;
+}
+    
     public boolean isConsumed() {
         return this.consumed;
     }
