@@ -116,6 +116,11 @@ public class CommandItemManager implements Listener {
             return;
         }
 
+        if (!itemDefinition.getAlreadyUsed().equals("") && event.getPlayer().hasPermission(itemDefinition.getAlreadyUsed())){
+event.getPlayer().sendMessage(ChatColor.RED + "You have used this item!");
+return;
+}
+        
         if (!checkCooldown(event.getPlayer(), command, itemDefinition.getCooldown())) {
             event.getPlayer().sendMessage(ChatColor.RED + "You can only use this item every " + getTimeString(itemDefinition.getCooldown()) + "!");
             return;
