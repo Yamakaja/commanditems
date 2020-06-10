@@ -31,6 +31,7 @@ repositories {
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
     maven { url "http://repo.bstats.org/content/repositories/releases/" }
     maven { url = "https://repo.aikar.co/content/groups/aikar/" }
+    maven { url = "https://hub.spigotmc.org/nexus/content/groups/public/" }
 }
 
 dependencies {
@@ -38,6 +39,7 @@ dependencies {
 
     compile "org.bstats:bstats-bukkit:1.5"
 
+    compile "co.aikar:minecraft-timings:1.0.4"
     compile "co.aikar:acf-paper:0.5.0-SNAPSHOT"
 
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0"
