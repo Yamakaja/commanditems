@@ -26,7 +26,7 @@ public class CommandItems extends JavaPlugin {
     public void onEnable() {
         new Metrics(this);
 
-        this.saveResource("config.yml", System.getProperty("me.yamakaja.debug") != null);
+        this.saveDefaultConfig();
 
         this.configManager = new ConfigManager(this);
         configManager.parse();
