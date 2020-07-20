@@ -49,7 +49,7 @@ shadowJar {
 
     relocate 'org.bstats', 'me.yamakaja.commanditems.lib.org.bstats'
 
-    relocate 'co.aikar', 'me.yamakaja.commanditems.lib.co.aikar'
+    relocate 'co.aikar.commands', 'me.yamakaja.commanditems.lib.co.aikar.commands'
     relocate 'org.intellij', 'me.yamakaja.commanditems.lib.org.intellij'
     relocate 'org.jetbrains', 'me.yamakaja.commanditems.lib.org.jetbrains'
     relocate 'net.jodah', 'me.yamakaja.commanditems.lib.net.jodah'
