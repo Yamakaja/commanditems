@@ -32,6 +32,8 @@ public class ItemStackDeserializer extends StdDeserializer<ItemStack> {
         List<String> lore = null;
         boolean glow = false;
         short damage = 0;
+        boolean unbreakable = false;
+        Integer customModelData = null;
 
         while (p.nextToken() == JsonToken.FIELD_NAME) {
             switch (p.getCurrentName()) {
@@ -58,6 +60,12 @@ public class ItemStackDeserializer extends StdDeserializer<ItemStack> {
                 case "damage":
                     damage = (short) p.nextIntValue(0);
                     break;
+                case "unbreakable":
+                    unbreakable = p.nextBooleanValue();
+                    break;
+                case "customModelData":
+                    customModelData = p.nextIntValue(0);
+                    break;
             }
         }
 
@@ -73,6 +81,10 @@ public class ItemStackDeserializer extends StdDeserializer<ItemStack> {
 
         if (lore != null && !lore.isEmpty())
             meta.setLore(lore);
+
+        meta.setUnbreakable(unbreakable);
+        if (customModelData != null)
+            meta.setCustomModelData(customModelData);
 
         stack.setItemMeta(meta);
 

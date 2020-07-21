@@ -23,6 +23,19 @@ items:
           { action: COMMAND, by: CONSOLE, command: "fly {player} off" },
           { action: MESSAGE, to: PLAYER, message: "&cFlight has been disabled!" }
         ]}
+  jumper: # This item demonstrates the use of a tool + damage value
+    item:
+      type: DIAMOND_PICKAXE
+      name: "&aJumper"
+      lore: ["&1Click for some vertical displacement ..."]
+      glow: true
+      unbreakable: true
+      damage: 50
+    consumed: true
+    cooldown: 20
+    actions:
+      - { action: COMMAND, by: CONSOLE, command: "execute as {player} run tp ~ ~10 ~"}
+      - { action: MESSAGE, to: PLAYER, message: "&aWeeee ... ouch!" }
   helpstick:
     item:
       type: STICK
