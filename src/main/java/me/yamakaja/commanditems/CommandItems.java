@@ -7,8 +7,7 @@ import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.interpreter.ItemExecutor;
 import me.yamakaja.commanditems.parser.ConfigManager;
 import me.yamakaja.commanditems.util.EnchantmentGlow;
-import org.bstats.Metrics;
-import org.bukkit.ChatColor;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.stream.Collectors;

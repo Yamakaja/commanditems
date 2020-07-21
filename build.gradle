@@ -1,5 +1,5 @@
 group 'me.yamakaja.commanditems'
-version '2.0.3'
+version '2.0.5'
 
 buildscript {
     repositories {
@@ -29,14 +29,14 @@ repositories {
     mavenLocal()
 
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
-    maven { url "http://repo.bstats.org/content/repositories/releases/" }
+    maven { url "https://repo.codemc.org/repository/maven-public/" }
     maven { url = "https://repo.aikar.co/content/groups/aikar/" }
 }
 
 dependencies {
     compileOnly "org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT"
 
-    compile "org.bstats:bstats-bukkit:1.1"
+    compile "org.bstats:bstats-bukkit:1.5"
 
     compile "co.aikar:acf-paper:0.5.0-SNAPSHOT"
 
@@ -49,7 +49,7 @@ shadowJar {
 
     relocate 'org.bstats', 'me.yamakaja.commanditems.lib.org.bstats'
 
-    relocate 'co.aikar', 'me.yamakaja.commanditems.lib.co.aikar'
+    relocate 'co.aikar.commands', 'me.yamakaja.commanditems.lib.co.aikar.commands'
     relocate 'org.intellij', 'me.yamakaja.commanditems.lib.org.intellij'
     relocate 'org.jetbrains', 'me.yamakaja.commanditems.lib.org.jetbrains'
     relocate 'net.jodah', 'me.yamakaja.commanditems.lib.net.jodah'

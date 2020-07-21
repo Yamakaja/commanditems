@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.UUID;
 
@@ -92,7 +93,11 @@ public class CommandItemManager implements Listener {
         if (event.getItem() == null)
             return;
 
-        String command = NMSUtil.getNBTString(event.getItem().getItemMeta(), "command");
+        ItemMeta itemMeta = event.getItem().getItemMeta();
+        if (itemMeta == null)
+            return;
+
+        String command = NMSUtil.getNBTString(itemMeta, "command");
         if (command == null)
             return;
 

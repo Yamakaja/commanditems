@@ -33,6 +33,7 @@ public class ItemStackDeserializer extends StdDeserializer<ItemStack> {
         boolean glow = false;
         short damage = 0;
         byte data = 0;
+        boolean unbreakable = false;
 
         while (p.nextToken() == JsonToken.FIELD_NAME) {
             switch (p.getCurrentName()) {
@@ -62,6 +63,9 @@ public class ItemStackDeserializer extends StdDeserializer<ItemStack> {
                 case "data":
                     data = (byte) p.nextIntValue(0);
                     break;
+                case "unbreakable":
+                    unbreakable = p.nextBooleanValue();
+                    break;
             }
         }
 
@@ -70,11 +74,16 @@ public class ItemStackDeserializer extends StdDeserializer<ItemStack> {
         ItemStack stack = new ItemStack(material, 1, damage, data);
         ItemMeta meta = stack.getItemMeta();
 
+        stack.setDurability(damage);
+
         if (name != null)
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
 
         if (lore != null && !lore.isEmpty())
             meta.setLore(lore);
+
+        if (meta != null)
+            meta.setUnbreakable(unbreakable);
 
         stack.setItemMeta(meta);
 
