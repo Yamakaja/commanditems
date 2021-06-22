@@ -34,7 +34,7 @@ items:
     consumed: true
     cooldown: 20
     actions:
-      - { action: COMMAND, by: CONSOLE, command: "execute as {player} run tp ~ ~10 ~"}
+      - { action: COMMAND, by: PLAYER_PRIVILEGED, perm: minecraft.command.teleport, command: "tp ~ ~10 ~"}
       - { action: MESSAGE, to: PLAYER, message: "&aWeeee ... ouch!" }
   helpstick:
     item:
