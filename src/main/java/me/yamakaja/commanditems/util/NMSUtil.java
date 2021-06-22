@@ -1,5 +1,6 @@
 package me.yamakaja.commanditems.util;
 
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -28,7 +29,7 @@ public class NMSUtil {
         nmsVersion = getNMSVersion();
 
         craftMetaItemClass = getOBCClass("inventory.CraftMetaItem");
-        nbtTagCompound = getNMSClass("NBTTagCompound");
+        nbtTagCompound = getNMSClass("NBTTagCompound", "nbt.NBTTagCompound");
 
         try {
             if (nbtTagCompound != null) {
@@ -53,21 +54,27 @@ public class NMSUtil {
     private NMSUtil() {
     }
 
-    public static Class<?> getNMSClass(String name) {
+    public static Class<?> getNMSClass(String oldName, String newName) {
+        // MC Version <= 1.16.5
         try {
-            return Class.forName("net.minecraft.server." + nmsVersion + "." + name);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
+            return Class.forName("net.minecraft.server." + nmsVersion + "." + oldName);
+        } catch (ClassNotFoundException ignored) {
         }
+
+        // MC Version >= 1.17
+        try {
+            return Class.forName("net.minecraft." + newName);
+        } catch (ClassNotFoundException ignored) {
+        }
+
+        throw new RuntimeException("Couldn't find NMS class: " + oldName  + " / " + newName);
     }
 
     public static Class<?> getOBCClass(String name) {
         try {
             return Class.forName("org.bukkit.craftbukkit." + nmsVersion + "." + name);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("Coudln't find OBC class: " + nmsVersion, e);
         }
     }
 
@@ -79,7 +86,7 @@ public class NMSUtil {
         try {
             Object tag = nbtTagCompound.newInstance();
             setString.invoke(tag, key, value);
-            ((Map<String, Object>)unhandledTagsField.get(meta)).put(NBT_KEY, tag);
+            ((Map<String, Object>) unhandledTagsField.get(meta)).put(NBT_KEY, tag);
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
         }
@@ -87,7 +94,7 @@ public class NMSUtil {
 
     public static String getNBTString(ItemMeta meta, String key) {
         try {
-            Object tag = ((Map<String, Object>)unhandledTagsField.get(meta)).get(NBT_KEY);
+            Object tag = ((Map<String, Object>) unhandledTagsField.get(meta)).get(NBT_KEY);
 
             if (tag == null)
                 return null;

@@ -1,14 +1,10 @@
-group 'me.yamakaja.commanditems'
-version '2.2.1'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.0'
-    }
+plugins {
+    id 'java-library'
+    id "com.github.johnrengelman.shadow" version "7.0.0"
 }
+
+group 'me.yamakaja.commanditems'
+version '2.3.0'
 
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
@@ -34,14 +30,14 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT"
+    api "org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT"
 
-    compile "org.bstats:bstats-bukkit:1.5"
+    implementation "org.bstats:bstats-bukkit:1.5"
 
-    compile "co.aikar:acf-paper:0.5.0-SNAPSHOT"
+    implementation "co.aikar:acf-paper:0.5.0-SNAPSHOT"
 
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0"
-    compile "com.fasterxml.jackson.core:jackson-databind:2.9.0"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.0"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.9.0"
 }
 
 shadowJar {
