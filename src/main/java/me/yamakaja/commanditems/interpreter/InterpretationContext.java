@@ -6,8 +6,10 @@ import org.bukkit.entity.Player;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.BiConsumer;
 
 /**
  * Created by Yamakaja on 26.05.18.
@@ -97,6 +99,20 @@ public class InterpretationContext {
         return null;
     }
 
+    public void forEachNumericLocal(BiConsumer<String, Double> consumer) {
+        Iterator<InterpretationStackFrame> iterator = this.interpretationStack.descendingIterator();
+
+        while (iterator.hasNext()) {
+            InterpretationStackFrame next = iterator.next();
+            for (Map.Entry<String, String> entry : next.getLocals().entrySet()) {
+                try {
+                    consumer.accept(entry.getKey(), Double.parseDouble(entry.getValue()));
+                } catch(Exception ignored) {
+                }
+            }
+        }
+    }
+
     public String resolveLocalsInString(String input) {
         char[] chars = input.toCharArray();
         StringBuilder outputBuilder = new StringBuilder();
@@ -141,6 +157,10 @@ public class InterpretationContext {
 
     @Override
     protected void finalize() {
+        release();
+    }
+
+    public void release() {
         for (InterpretationStackFrame frame : this.interpretationStack) {
             frame.reset();
             addToCache(frame);

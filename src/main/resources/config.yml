@@ -11,36 +11,56 @@ items:
     item:
       type: FEATHER
       name: "&a&lFlight token"
-      lore: ["&1Click for 10 seconds of flight!", "&kRandom second line"]
+      lore: [ "&1Click for 10 seconds of flight!", "&kRandom second line" ]
       glow: true
     consumed: true
     cooldown: 20
     actions:
       - { action: COMMAND, by: CONSOLE, command: "fly {player} on" }
       - { action: MESSAGE, to: PLAYER, message: "&aFlight has been enabled!" }
-      - { action: REPEAT, from: 9, to: 1, increment: -1, delay: 20, period: 20, actions: [{ action: MESSAGE, to: PLAYER, message: "&a{i}s to go" }]}
+      - { action: REPEAT, from: 9, to: 1, increment: -1, delay: 20, period: 20, actions: [ { action: MESSAGE, to: PLAYER, message: "&a{i}s to go" } ] }
       - { action: WAIT, duration: 200, actions: [
-          { action: COMMAND, by: CONSOLE, command: "fly {player} off" },
-          { action: MESSAGE, to: PLAYER, message: "&cFlight has been disabled!" }
-        ]}
+        { action: COMMAND, by: CONSOLE, command: "fly {player} off" },
+        { action: MESSAGE, to: PLAYER, message: "&cFlight has been disabled!" }
+      ] }
   jumper: # This item demonstrates the use of a tool + damage value
     item:
       type: DIAMOND_PICKAXE
       name: "&aJumper"
-      lore: ["&1Click for some vertical displacement ..."]
+      lore: [ "&1Click for some vertical displacement ..." ]
       glow: true
       unbreakable: true
       damage: 50
     consumed: true
     cooldown: 20
     actions:
-      - { action: COMMAND, by: PLAYER_PRIVILEGED, perm: minecraft.command.teleport, command: "tp ~ ~10 ~"}
-      - { action: MESSAGE, to: PLAYER, message: "&aWeeee ... ouch!" }
+      - { action: MATH_EXPR, target: "YOFF", expr: "rand() * 7 + 5", actions: [
+        { action: COMMAND, by: PLAYER_PRIVILEGED, perm: minecraft.command.teleport, command: "tp ~ ~{YOFF} ~" },
+        { action: MATH_EXPR, round: true, target: "YOFF", expr: "YOFF", actions: [
+          { action: MESSAGE, to: PLAYER, message: "&aWeeee ... ouch! (Sent you up roughly {YOFF}m)" }
+        ] }
+      ] }
+  toomanyzombies:
+    item:
+      type: ROTTEN_FLESH
+      name: "&c&lZoooombies"
+      lore: [ "&1Make sure you're prepared for what's coming!" ]
+      glow: true
+    consumed: true
+    cooldown: 30
+    actions:
+      - { action: REPEAT, from: 0, to: 31, increment: 1, delay: 0, period: 4, actions: [
+        { action: MATH_EXPR, target: xoff, expr: "10 * sin(2*pi * i/32)", actions: [
+          { action: MATH_EXPR, target: zoff, expr: "10 * cos(2*pi * i/32)", actions: [
+            { action: COMMAND, by: PLAYER_PRIVILEGED, perm: minecraft.command.summon, command: "summon minecraft:zombie ~{xoff} ~ ~{zoff}" }
+          ] }
+        ] }
+      ] }
   helpstick:
     item:
       type: STICK
       name: "&a&lHelp Stick"
-      lore: ["&1Click to send a help request to moderators!"]
+      lore: [ "&1Click to send a help request to moderators!" ]
       glow: true
     consumed: false
     cooldown: 60
@@ -55,7 +75,7 @@ items:
     sneaking: true
     actions:
       - { action: REPEAT, period: 1, delay: 0, from: 0, to: 99, actions: [
-          { action: ITER, what: ONLINE_PLAYERS, actions: [
-            { action: CALC, a: "{iter_locY}", b: "4", op: ADD, target: "y", actions: [
-              { action: COMMAND, by: CONSOLE, command: "minecraft:summon minecraft:experience_bottle {iter_locX} {y} {iter_locZ}" }]}]}]}
+        { action: ITER, what: ONLINE_PLAYERS, actions: [
+          { action: CALC, a: "{iter_locY}", b: "4", op: ADD, target: "y", actions: [
+            { action: COMMAND, by: CONSOLE, command: "minecraft:summon minecraft:experience_bottle {iter_locX} {y} {iter_locZ}" } ] } ] } ] }
       - { action: MESSAGE, to: EVERYBODY, message: "&a&l{player} has started an XP party!" }

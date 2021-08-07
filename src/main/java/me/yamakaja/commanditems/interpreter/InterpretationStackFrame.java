@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class InterpretationStackFrame {
 
-    private Map<String, String> locals = new HashMap<>();
+    private final Map<String, String> locals = new HashMap<>();
 
     public String getLocal(String key) {
         return this.locals.get(key);
@@ -20,6 +20,10 @@ public class InterpretationStackFrame {
 
     public void reset() {
         this.locals.clear();
+    }
+
+    public Map<String, String> getLocals() {
+        return locals;
     }
 
     public InterpretationStackFrame copy(InterpretationStackFrame into) {

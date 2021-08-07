@@ -15,6 +15,11 @@ public class ActionWait extends Action {
     @JsonProperty(required = true)
     private Action[] actions;
 
+    @Override
+    public void init() {
+        for (Action action : this.actions) action.init();
+    }
+
     protected ActionWait() {
         super(ActionType.WAIT);
     }
@@ -28,6 +33,8 @@ public class ActionWait extends Action {
             public void run() {
                 for (Action action : actions)
                     action.process(contextClone);
+
+                contextClone.release();
             }
 
         }.runTaskLater(context.getPlugin(), duration);

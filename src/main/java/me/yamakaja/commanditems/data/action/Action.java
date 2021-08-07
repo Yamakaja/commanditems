@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import me.yamakaja.commanditems.interpreter.InterpretationContext;
 
-/**
- * Created by Yamakaja on 26.05.18.
- */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "action",
@@ -20,6 +17,7 @@ import me.yamakaja.commanditems.interpreter.InterpretationContext;
         @JsonSubTypes.Type(value = ActionWait.class, name = "WAIT"),
         @JsonSubTypes.Type(value = ActionIterate.class, name = "ITER"),
         @JsonSubTypes.Type(value = ActionCalc.class, name = "CALC"),
+        @JsonSubTypes.Type(value = ActionMathExpr.class, name = "MATH_EXPR")
 })
 public abstract class Action {
 
@@ -35,5 +33,8 @@ public abstract class Action {
     }
 
     public abstract void process(InterpretationContext context);
+
+    public void init() {
+    }
 
 }

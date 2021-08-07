@@ -100,7 +100,7 @@ This action can be used to send messages to players or the console:
 | EVERYBODY  | The message is broadcasted to every player                                                                  |
 | PERMISSION | The message is broadcasted to every player that has a certain permission, specified by the `perm` parameter |
 
-#### CALC
+#### CALC (Deprecated in favor of MATH_EXPR)
 
 Perform some simple integer arithmetic
 
@@ -111,6 +111,62 @@ Perform some simple integer arithmetic
 | b         | Operand b                                              | Integer                  |               | true     |
 | target    | The variable which the result will be stored in        | Variable name            | y             | false    |
 | actions   | Sub actions which can use the result of this operation | An array/list of actions |               | true     |
+
+#### MATH_EXPR
+
+Implements a small expression parser that can be used to evaluate mathematical expressions
+
+| Parameter | Description                                            | Valid values             | Default value | Required |
+|-----------|--------------------------------------------------------|--------------------------|---------------|----------|
+| expr      | The operation to perform                               | <EXPR>                   |               | true     |
+| round     | Round the output to int (1) or leave it as double (1.0)| boolean                  | false         | false    |
+| target    | The variable which the result will be stored in        | Variable name            |               | true     |
+| actions   | Sub actions which can use the result of this operation | An array/list of actions |               | true     |
+
+The expression parser can deal with c-style arithmetic expressions, a couple examples:
+
+* The gaussian pdf: `1/sqrt(2*pi*sigma^2)*exp(-(x-mu)^2/(2*sigma^2))`
+* A gaussian random variable with mu = 5, sigma = 3: `randn()*3 + 5`
+* A uniformly distributed random value between 10 and 20: `round(10 + 10 * rand())`
+
+You can play with the expression parser using the `/cmdi calc` command, where the gaussian pdf can be evaluated for `sigma=5` and `mu=0` at `x=0` like this: `/cmdi calc 1/sqrt(2*pi*sigma^2)*exp(-(x-mu)^2/(2*sigma^2)) mu=0 sigma=5 x=0`.
+
+**Note**: The `/cmdi calc` command cannot deal with spaces in the expression, because it uses spaces to delimit the expression of the context variables which are passed afterwards. This limitation is **NOT** present when specifying expressions in the command item configuration file.
+
+Available variables:
+* pi, e
+* Numeric context variables
+
+Available functions:
+
+(Unless noted otherwise, trigonometric functions deal in radians, i.e. `sin(pi/2)` will evaluate to `1.0`.)
+
+|   Function   | Description |
+|--------------|-------------|
+| `sqrt(x)`    |             |
+| `sin(x)`     |             |
+| `asin(x)`    | The inverse sin function |
+| `cos(x)`     |             |
+| `acos(x)`    | The inverse cos function |
+| `tan(x)`     |             |
+| `atan(x)`    | The inverse tan function |
+| `ceil(x)`    | Always rounds up, i.e. `ceil(0.1)` -> `1`. |
+| `floor(x)`   | Always rounds down |
+| `abs(x)`     | returns `-x if x < 0 else x` |
+| `exp(x)`     | `e^x` |
+| `log(x)`     | Natural logarithm |
+| `round(x)`   | Round to nearest integer |
+| `min(x,y,...)` | Returns the smallest of n inputs |
+| `max(x,y,...)` | Returns the greatest of n inputs |
+| `fmod(x, y)` | `x % y` |
+| `sign(x)`    | Returns the sign of `x`, or `0` for `x = 0` |
+| `rand()`     | Uniform random number in `[0,1)` (`0` inclusive, `1` exclusive) |
+| `randn()`    | Standard normal distributed variable |
+
+Available operators are the usual:
+* `+`, `-`, `*`, `/`
+* `x^y`: `x` to the power `y`
+* `x%y`: Return the remainder of x divided by y
 
 #### ITER
 

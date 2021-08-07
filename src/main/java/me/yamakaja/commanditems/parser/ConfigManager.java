@@ -5,13 +5,17 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import me.yamakaja.commanditems.CommandItems;
 import me.yamakaja.commanditems.data.CommandItemsConfig;
 import me.yamakaja.commanditems.data.ItemDefinition;
+import me.yamakaja.commanditems.data.action.Action;
 import me.yamakaja.commanditems.util.NMSUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * Created by Yamakaja on 26.05.18.
@@ -42,6 +46,15 @@ public class ConfigManager {
             ItemMeta itemMeta = entry.getValue().getItem().getItemMeta();
             NMSUtil.setNBTString(itemMeta, "command", entry.getKey());
             entry.getValue().getItem().setItemMeta(itemMeta);
+
+            try {
+                for (Action action : entry.getValue().getActions())
+                    action.init();
+            } catch (RuntimeException e) {
+                plugin.getLogger().severe(ChatColor.RED + "Failed to initialize command item: " + entry.getKey());
+                plugin.getLogger().severe(ChatColor.RED + e.getMessage());
+                Bukkit.getPluginManager().disablePlugin(plugin);
+            }
         }
     }
 

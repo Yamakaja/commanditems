@@ -4,6 +4,8 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.util.NMSUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -136,7 +138,13 @@ public class CommandItemManager implements Listener {
                 }
         }
 
-        this.plugin.getExecutor().processInteraction(event.getPlayer(), itemDefinition);
+        try {
+            this.plugin.getExecutor().processInteraction(event.getPlayer(), itemDefinition);
+        } catch (RuntimeException e) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Failed to process command item: " + command);
+            event.getPlayer().sendMessage(MsgKey.ITEM_ERROR.get());
+            e.printStackTrace();
+        }
     }
 
 }

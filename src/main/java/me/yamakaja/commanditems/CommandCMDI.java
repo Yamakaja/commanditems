@@ -1,16 +1,16 @@
 package me.yamakaja.commanditems;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.BukkitCommandIssuer;
 import co.aikar.commands.CommandHelp;
-import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.annotation.*;
 import co.aikar.commands.contexts.OnlinePlayer;
 import me.yamakaja.commanditems.data.ItemDefinition;
+import me.yamakaja.commanditems.data.action.ActionMathExpr;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CommandCMDI extends BaseCommand {
@@ -63,6 +63,46 @@ public class CommandCMDI extends BaseCommand {
             sender.sendMessage(ChatColor.RED + "Failed to read the configuration:");
             sender.sendMessage(ChatColor.RED + e.getCause().getMessage());
         }
+    }
+
+    @Subcommand("calc")
+    @Syntax("<expression> [<VAR>=<VAL>]...")
+    @CommandPermission("cmdi.math")
+    public void onCalc(CommandSender sender, String expression, String... args) {
+        ActionMathExpr.Expression ast;
+        try {
+            ast = ActionMathExpr.parse(expression);
+        } catch (RuntimeException e) {
+            sender.sendMessage(ChatColor.RED + "Invalid expression: " + e.getMessage());
+            return;
+        }
+        Map<String, Double> params = new HashMap<>();
+
+        for (String arg : args) {
+            String[] split = arg.split("=");
+
+            if (split.length != 2) {
+                sender.sendMessage(ChatColor.RED + "Invalid parameter description, should be <VAR>=<VAL>");
+                return;
+            }
+
+            double x;
+            try {
+                x = Double.parseDouble(split[1]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage(ChatColor.RED + "Invalid parameter description, <VAL> should be a number");
+                return;
+            }
+
+            params.put(split[0], x);
+        }
+
+        try {
+            sender.sendMessage(ChatColor.GREEN + expression + ChatColor.GRAY + " -> " + ChatColor.GREEN + ast.eval(params));
+        } catch (RuntimeException e) {
+            sender.sendMessage(ChatColor.RED + "Evaluation failed: " + e.getMessage());
+        }
+
     }
 
 }

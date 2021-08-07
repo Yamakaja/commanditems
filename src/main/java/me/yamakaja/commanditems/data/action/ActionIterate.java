@@ -15,6 +15,11 @@ public class ActionIterate extends Action {
     @JsonProperty(required = true)
     private Action[] actions;
 
+    @Override
+    public void init() {
+        for (Action action : this.actions) action.init();
+    }
+
     @JsonProperty(value = "what")
     private IterationTarget target;
 

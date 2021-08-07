@@ -10,7 +10,8 @@ public enum ActionType {
     REPEAT(ActionRepeat.class),
     WAIT(ActionWait.class),
     ITER(ActionIterate.class),
-    CALC(ActionCalc.class);
+    CALC(ActionCalc.class),
+    MATH_EXPR(ActionMathExpr.class);
 
     private Class<? extends Action> actionClass;
 

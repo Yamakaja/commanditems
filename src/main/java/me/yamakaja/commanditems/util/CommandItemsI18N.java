@@ -14,8 +14,8 @@ public final class CommandItemsI18N {
         // Keys with default message
         ITEM_DISABLED("&cThis item has been disabled!"),
         ITEM_NOPERMISSION("&cYou don't have permission to use this item!"),
-        ITEM_COOLDOWN("&cYou can only use this item once every $TIME_PERIOD!")
-        ;
+        ITEM_COOLDOWN("&cYou can only use this item once every $TIME_PERIOD!"),
+        ITEM_ERROR("&cSomething went wrong during the execution of your command item, operators have been notified!");
 
         private final String defaultMessage;
 

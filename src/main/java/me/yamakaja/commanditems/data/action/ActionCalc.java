@@ -28,6 +28,11 @@ public class ActionCalc extends Action {
     private Action[] actions;
 
     @Override
+    public void init() {
+        for (Action action : this.actions) action.init();
+    }
+
+    @Override
     public void process(InterpretationContext context) {
         try {
             int a = Integer.parseInt(context.resolveLocalsInString(this.a));

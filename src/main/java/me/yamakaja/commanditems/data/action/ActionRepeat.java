@@ -35,7 +35,38 @@ public class ActionRepeat extends Action {
     private Action[] actions;
 
     @Override
+    public void init() {
+        if (counterVar.isEmpty())
+            throw new RuntimeException("Empty counter variable name in REPEAT!");
+
+        if (period < 0)
+            throw new RuntimeException("Negative period in REPEAT!");
+
+        if (delay < 0)
+            throw new RuntimeException("Negative delay in REPEAT!");
+
+        if (increment == 0)
+            throw new RuntimeException("Increment is 0, infinite loops are not supported by REPEAT!");
+
+        if (Math.signum((double) to - from) * increment < 0)
+            throw new RuntimeException("Increment is of the wrong sign in REPEAT!");
+
+        for (Action action : this.actions) action.init();
+    }
+
+    @Override
     public void process(InterpretationContext context) {
+        context.pushFrame();
+        if (delay == 0 && period == 0) {
+            for (int i = from; increment > 0 && i > to || increment < 0 && i < to; i+= increment) {
+                context.pushLocal(this.counterVar, String.valueOf(i));
+                for (Action action : this.actions) action.process(context);
+            }
+
+            context.popFrame();
+            return;
+        }
+
         InterpretationContext clone = context.copy();
         new BukkitRunnable() {
 
@@ -45,16 +76,15 @@ public class ActionRepeat extends Action {
             public void run() {
                 if (increment > 0 && i > to || increment < 0 && i < to) {
                     this.cancel();
+                    clone.popFrame();
+                    clone.release();
                     return;
                 }
 
-                clone.pushFrame();
+
                 clone.pushLocal(counterVar, String.valueOf(i));
 
-                for (Action action : actions)
-                    action.process(clone);
-
-                clone.popFrame();
+                for (Action action : actions) action.process(clone);
 
                 i += increment;
             }
