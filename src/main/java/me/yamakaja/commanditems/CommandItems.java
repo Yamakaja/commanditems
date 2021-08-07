@@ -6,6 +6,7 @@ import co.aikar.commands.PaperCommandManager;
 import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.interpreter.ItemExecutor;
 import me.yamakaja.commanditems.parser.ConfigManager;
+import me.yamakaja.commanditems.util.CommandItemsI18N;
 import me.yamakaja.commanditems.util.EnchantmentGlow;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,10 +27,11 @@ public class CommandItems extends JavaPlugin {
     public void onEnable() {
         new Metrics(this);
 
-        if (System.getProperty("me.yamakaja.debug") != null)
-            this.saveResource("config.yml", true);
-        else
-            this.saveDefaultConfig();
+        boolean debug = System.getProperty("me.yamakaja.debug") != null;
+        this.saveResource("config.yml", debug);
+        this.saveResource("messages.yml", debug);
+
+        CommandItemsI18N.initialize(this);
 
         this.configManager = new ConfigManager(this);
         configManager.parse();

@@ -52,9 +52,6 @@ public class ActionCommand extends Action {
     }
 
 
-    /**
-     * Created by Yamakaja on 26.05.18.
-     */
     public enum CommandMode {
 
         PLAYER,

@@ -4,7 +4,6 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.util.NMSUtil;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,11 +12,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Collections;
 import java.util.UUID;
 
-/**
- * Created by Yamakaja on 26.05.18.
- */
+import me.yamakaja.commanditems.util.CommandItemsI18N.MsgKey;
+
 public class CommandItemManager implements Listener {
 
     private CommandItems plugin;
@@ -103,7 +102,7 @@ public class CommandItemManager implements Listener {
 
         ItemDefinition itemDefinition = this.plugin.getConfigManager().getConfig().getItems().get(command);
         if (itemDefinition == null) {
-            event.getPlayer().sendMessage(ChatColor.RED + "This command item has been disabled!");
+            event.getPlayer().sendMessage(MsgKey.ITEM_DISABLED.get());
             return;
         }
 
@@ -112,12 +111,13 @@ public class CommandItemManager implements Listener {
             return;
 
         if (!event.getPlayer().hasPermission("cmdi.item." + command)) {
-            event.getPlayer().sendMessage(ChatColor.RED + "You don't have permission to use this item!");
+            event.getPlayer().sendMessage(MsgKey.ITEM_NOPERMISSION.get());
             return;
         }
 
         if (!checkCooldown(event.getPlayer(), command, itemDefinition.getCooldown())) {
-            event.getPlayer().sendMessage(ChatColor.RED + "You can only use this item every " + getTimeString(itemDefinition.getCooldown()) + "!");
+            event.getPlayer().sendMessage(MsgKey.ITEM_COOLDOWN.get(Collections.singletonMap("TIME_PERIOD",
+                    getTimeString(itemDefinition.getCooldown()))));
             return;
         }
 

@@ -13,9 +13,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
-/**
- * Created by Yamakaja on 26.05.18.
- */
 public class CommandCMDI extends BaseCommand {
 
     private CommandItems plugin;

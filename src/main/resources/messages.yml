@@ -1,0 +1,15 @@
+#########################################
+#                                       #
+#       Command Items by Yamakaja       #
+#                                       #
+#########################################
+
+# Message configuration
+#
+# Note:
+# * Colors can be specified using the usual &[0-9a-f] codes
+# * Variables are specified using the $VAR_NAME syntax, see the default values for some examples
+
+item.disabled: "&cThis item has been disabled!"
+item.nopermission: "&cYou don't have permission to use this item!"
+item.cooldown: "&cYou can only use this item once every $TIME_PERIOD!"
