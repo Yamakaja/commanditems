@@ -1,9 +1,12 @@
 package me.yamakaja.commanditems.data.action;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.interpreter.InterpretationContext;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.PermissionAttachment;
+
+import java.util.List;
 
 /**
  * Created by Yamakaja on 26.05.18.
@@ -21,6 +24,27 @@ public class ActionCommand extends Action {
 
     public ActionCommand() {
         super(ActionType.COMMAND);
+    }
+
+    @Override
+    public void trace(List<ItemDefinition.ExecutionTrace> trace, int depth) {
+        String line;
+
+        switch (this.commandMode) {
+            case PLAYER:
+                line = String.format("PLAYER: /%s", this.command);
+                break;
+            case CONSOLE:
+                line = String.format("CONSOLE: %s", this.command);
+                break;
+            case PLAYER_PRIVILEGED:
+                line = String.format("PLAYER (with added permission %s): /%s", this.providedPermission, this.command);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + this.commandMode);
+        }
+
+        trace.add(new ItemDefinition.ExecutionTrace(depth, line));
     }
 
     @Override

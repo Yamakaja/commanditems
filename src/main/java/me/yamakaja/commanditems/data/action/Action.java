@@ -3,7 +3,10 @@ package me.yamakaja.commanditems.data.action;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.interpreter.InterpretationContext;
+
+import java.util.List;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -37,4 +40,5 @@ public abstract class Action {
     public void init() {
     }
 
+    public abstract void trace(List<ItemDefinition.ExecutionTrace> trace, int depth);
 }

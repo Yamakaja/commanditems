@@ -2,6 +2,7 @@ package me.yamakaja.commanditems.data.action;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import me.yamakaja.commanditems.CommandItems;
+import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.interpreter.InterpretationContext;
 
 import java.util.*;
@@ -24,6 +25,14 @@ public class ActionMathExpr extends Action {
 
     public ActionMathExpr() {
         super(ActionType.MATH_EXPR);
+    }
+
+    @Override
+    public void trace(List<ItemDefinition.ExecutionTrace> trace, int depth) {
+        String line = String.format("%s = %s%s", target, this.round ? "(rounded) " : "", expr);
+
+        trace.add(new ItemDefinition.ExecutionTrace(depth, line));
+        for (Action action : this.actions) action.trace(trace, depth + 1);
     }
 
     @Override

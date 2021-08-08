@@ -1,8 +1,11 @@
 package me.yamakaja.commanditems.data.action;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.interpreter.InterpretationContext;
 import org.bukkit.Bukkit;
+
+import java.util.List;
 
 /**
  * Created by Yamakaja on 27.05.18.
@@ -25,6 +28,19 @@ public class ActionIterate extends Action {
 
     protected ActionIterate() {
         super(ActionType.ITER);
+    }
+
+    @Override
+    public void trace(List<ItemDefinition.ExecutionTrace> trace, int depth) {
+        String line;
+        if (perm == null)
+            line = "for (all online players)";
+        else
+            line = String.format("for (all online players with permission %s)", perm);
+
+        trace.add(new ItemDefinition.ExecutionTrace(depth, line));
+
+        for (Action action : this.actions) action.trace(trace, depth + 1);
     }
 
     @Override

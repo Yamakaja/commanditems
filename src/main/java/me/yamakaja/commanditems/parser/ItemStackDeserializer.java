@@ -16,9 +16,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by Yamakaja on 26.05.18.
- */
 public class ItemStackDeserializer extends StdDeserializer<ItemStack> {
 
     protected ItemStackDeserializer() {

@@ -1,13 +1,13 @@
 package me.yamakaja.commanditems.data.action;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.interpreter.InterpretationContext;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-/**
- * Created by Yamakaja on 26.05.18.
- */
+import java.util.List;
+
 public class ActionMessage extends Action {
 
     private MessageTarget target;
@@ -23,6 +23,30 @@ public class ActionMessage extends Action {
 
         this.message = ChatColor.translateAlternateColorCodes('&', message);
         this.permission = permission;
+    }
+
+    @Override
+    public void trace(List<ItemDefinition.ExecutionTrace> trace, int depth) {
+        String line;
+
+        switch (this.target) {
+            case PLAYER:
+                line = String.format("To player: %s", this.message);
+                break;
+            case CONSOLE:
+                line = String.format("To console: %s", this.message);
+                break;
+            case EVERYBODY:
+                line = String.format("To everybody: %s", this.message);
+                break;
+            case PERMISSION:
+                line = String.format("To everybody with permission %s: %s", this.permission, this.message);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + this.target);
+        }
+
+        trace.add(new ItemDefinition.ExecutionTrace(depth, line));
     }
 
     @Override

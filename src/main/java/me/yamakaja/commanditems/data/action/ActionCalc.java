@@ -1,7 +1,10 @@
 package me.yamakaja.commanditems.data.action;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.interpreter.InterpretationContext;
+
+import java.util.List;
 
 /**
  * Created by Yamakaja on 27.05.18.
@@ -33,6 +36,16 @@ public class ActionCalc extends Action {
     }
 
     @Override
+    public void trace(List<ItemDefinition.ExecutionTrace> trace, int depth) {
+        ItemDefinition.ExecutionTrace line = new ItemDefinition.ExecutionTrace(depth, String.format("%s = %s %c %s",
+                target, a, operationType.op, b));
+
+        trace.add(line);
+
+        for (Action action : this.actions) action.trace(trace, depth + 1);
+    }
+
+    @Override
     public void process(InterpretationContext context) {
         try {
             int a = Integer.parseInt(context.resolveLocalsInString(this.a));
@@ -51,26 +64,32 @@ public class ActionCalc extends Action {
     }
 
     public enum OperationType {
-        ADD() {
+        ADD('+') {
             public int process(int a, int b) {
                 return a + b;
             }
         },
-        SUB() {
+        SUB('-') {
             public int process(int a, int b) {
                 return a - b;
             }
         },
-        MUL() {
+        MUL('*') {
             public int process(int a, int b) {
                 return a * b;
             }
         },
-        DIV() {
+        DIV('/') {
             public int process(int a, int b) {
                 return a / b;
             }
         };
+
+        public final char op;
+
+        OperationType(char op) {
+            this.op = op;
+        }
 
         public abstract int process(int a, int b);
     }
