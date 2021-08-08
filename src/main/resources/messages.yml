@@ -13,5 +13,6 @@
 item:
   disabled: "&cThis item has been disabled!"
   nopermission: "&cYou don't have permission to use this item!"
-  cooldown: "&cYou can only use this item once every $TIME_PERIOD!"
+  # cooldown: "&cYou can only use this item once every $TIME_PERIOD!"
+  cooldown: "&cYou can use this item again in $TIME_REMAINING!"
   error: "&cSomething went wrong during the execution of your command item, operators have been notified!"

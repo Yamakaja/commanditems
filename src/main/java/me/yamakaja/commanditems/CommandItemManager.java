@@ -1,6 +1,7 @@
 package me.yamakaja.commanditems;
 
 import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.util.NMSUtil;
@@ -87,6 +88,18 @@ public class CommandItemManager implements Listener {
         return true;
     }
 
+    private long getSecondsUntilNextUse(Player player, String command, long duration) {
+        long lastUse = 0;
+        if (this.lastUse.contains(player.getUniqueId(), command))
+            lastUse = this.lastUse.get(player.getUniqueId(), command);
+
+        long difference = lastUse + duration * 1000 - System.currentTimeMillis();
+        if (difference < 0)
+            return 0;
+
+        return (long) Math.ceil(difference / 1000.0);
+    }
+
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
@@ -119,8 +132,11 @@ public class CommandItemManager implements Listener {
         }
 
         if (!checkCooldown(event.getPlayer(), command, itemDefinition.getCooldown())) {
-            event.getPlayer().sendMessage(MsgKey.ITEM_COOLDOWN.get(Collections.singletonMap("TIME_PERIOD",
-                    getTimeString(itemDefinition.getCooldown()))));
+            Map<String, String> params = Maps.newHashMap();
+            params.put("TIME_PERIOD", getTimeString(itemDefinition.getCooldown()));
+            params.put("TIME_REMAINING", getTimeString(getSecondsUntilNextUse(event.getPlayer(), command, itemDefinition.getCooldown())));
+
+            event.getPlayer().sendMessage(MsgKey.ITEM_COOLDOWN.get(params));
             return;
         }
 

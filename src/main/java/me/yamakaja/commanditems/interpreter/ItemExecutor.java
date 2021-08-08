@@ -32,8 +32,9 @@ public class ItemExecutor {
         context.pushLocal("food", String.valueOf(player.getFoodLevel()));
         context.pushLocal("health", String.valueOf(player.getHealth()));
 
-        for (Map.Entry<String, String> entry : definition.getParameters().entrySet())
-            context.pushLocal(entry.getKey(), params.getOrDefault(entry.getKey(), entry.getValue()));
+        if (definition.getParameters() != null)
+            for (Map.Entry<String, String> entry : definition.getParameters().entrySet())
+                context.pushLocal(entry.getKey(), params.getOrDefault(entry.getKey(), entry.getValue()));
 
         for (Action action : definition.getActions())
             action.process(context);

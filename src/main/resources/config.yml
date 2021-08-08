@@ -31,10 +31,13 @@ items:
       glow: true
       unbreakable: true
       damage: 50
+    parameters:
+      fixedHeight: 10
+      randomOffset: 5
     consumed: true
     cooldown: 20
     actions:
-      - { action: MATH_EXPR, target: "YOFF", expr: "rand() * 7 + 5", actions: [
+      - { action: MATH_EXPR, target: "YOFF", expr: "rand() * randomOffset + fixedHeight", actions: [
         { action: COMMAND, by: PLAYER_PRIVILEGED, perm: minecraft.command.teleport, command: "tp ~ ~{YOFF} ~" },
         { action: MATH_EXPR, round: true, target: "YOFF", expr: "YOFF", actions: [
           { action: MESSAGE, to: PLAYER, message: "&aWeeee ... ouch! (Sent you up roughly {YOFF}m)" }
