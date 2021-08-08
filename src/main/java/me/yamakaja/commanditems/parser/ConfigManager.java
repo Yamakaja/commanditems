@@ -43,10 +43,7 @@ public class ConfigManager {
         }
 
         for (Map.Entry<String, ItemDefinition> entry : this.config.getItems().entrySet()) {
-            ItemMeta itemMeta = entry.getValue().getItem().getItemMeta();
-            NMSUtil.setNBTString(itemMeta, "command", entry.getKey());
-            entry.getValue().getItem().setItemMeta(itemMeta);
-
+            entry.getValue().setKey(entry.getKey());
             try {
                 for (Action action : entry.getValue().getActions())
                     action.init();

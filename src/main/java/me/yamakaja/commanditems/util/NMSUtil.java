@@ -140,7 +140,7 @@ public class NMSUtil {
             Map<String, String> map = new HashMap<>();
             Set<String> keys = (Set<String>) getKeys.invoke(mapTag);
 
-            for (String k : keys) map.put(k, (String) getString.invoke(mapTag, key));
+            for (String k : keys) map.put(k, (String) getString.invoke(mapTag, k));
 
             return map;
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {

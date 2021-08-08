@@ -47,10 +47,8 @@ public class CommandCMDI extends BaseCommand {
     @Subcommand("give")
     @CommandPermission("cmdi.give")
     @Syntax("<player> <item> [amount] [KEY=VAL]...")
-    @CommandCompletion("@players @itemdefs")
+    @CommandCompletion("@players @itemdefs @nothing @itemparams")
     public void onGive(CommandSender issuer, OnlinePlayer player, ItemDefinition definition, @Default("1") Integer amount, String... params) {
-        ItemStack item = definition.getItem().clone();
-
         Map<String, String> paramMap = Maps.newHashMap();
 
         for (String param : params) {
@@ -64,10 +62,8 @@ public class CommandCMDI extends BaseCommand {
             paramMap.put(split[0], split[1]);
         }
 
-        ItemMeta meta = item.getItemMeta().clone();
-        NMSUtil.setNBTStringMap(meta, "params", paramMap);
+        ItemStack item = definition.getItem(paramMap);
 
-        item.setItemMeta(meta);
         item.setAmount(amount);
         Map<Integer, ItemStack> leftovers = player.player.getInventory().addItem(item);
 

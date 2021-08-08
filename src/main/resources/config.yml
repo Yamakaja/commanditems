@@ -42,17 +42,21 @@ items:
       ] }
   toomanyzombies:
     item:
-      type: ROTTEN_FLESH
+      type: PLAYER_HEAD
       name: "&c&lZoooombies"
       lore: [ "&1Make sure you're prepared for what's coming!" ]
       glow: true
+      skullUser: Zombie
+      # skullUser: 02b0e86d-c86a-4ae7-bc41-015d21f80c1c # Alternatively provide the uuid
     consumed: true
     cooldown: 30
+    parameters:
+      range: 10
     actions:
       - { action: REPEAT, from: 0, to: 31, increment: 1, delay: 0, period: 4, actions: [
-        { action: MATH_EXPR, target: xoff, expr: "10 * sin(2*pi * i/32)", actions: [
-          { action: MATH_EXPR, target: zoff, expr: "10 * cos(2*pi * i/32)", actions: [
-            { action: COMMAND, by: PLAYER_PRIVILEGED, perm: minecraft.command.summon, command: "summon minecraft:zombie ~{xoff} ~ ~{zoff}" }
+        { action: MATH_EXPR, target: xoff, expr: "x + range * sin(2*pi * i/32) + randn()*range/5", actions: [
+          { action: MATH_EXPR, target: zoff, expr: "z + range * cos(2*pi * i/32) + randn()*range/5", actions: [
+            { action: COMMAND, by: PLAYER_PRIVILEGED, perm: minecraft.command.summon, command: "summon minecraft:zombie {xoff} ~ {zoff}" }
           ] }
         ] }
       ] }

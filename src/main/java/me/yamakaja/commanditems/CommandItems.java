@@ -9,8 +9,10 @@ import me.yamakaja.commanditems.parser.ConfigManager;
 import me.yamakaja.commanditems.util.CommandItemsI18N;
 import me.yamakaja.commanditems.util.EnchantmentGlow;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 /**
@@ -47,9 +49,19 @@ public class CommandItems extends JavaPlugin {
             return itemDef;
         });
 
-        this.commandManager.getCommandCompletions().registerCompletion("itemdefs", context -> this.configManager.getConfig().getItems().keySet().stream()
-                .filter(key -> key.toLowerCase().startsWith(context.getInput().toLowerCase()))
-                .collect(Collectors.toList()));
+        this.commandManager.getCommandCompletions().registerCompletion("itemdefs",
+                context -> this.configManager.getConfig().getItems().keySet().stream()
+                        .filter(key -> key.toLowerCase().startsWith(context.getInput().toLowerCase()))
+                        .collect(Collectors.toList()));
+
+        this.commandManager.getCommandCompletions().registerCompletion("itemparams", context -> {
+            ItemDefinition itemDefinition = context.getContextValue(ItemDefinition.class);
+            return itemDefinition.getParameters().entrySet().stream()
+                    .filter(x -> x.getKey().toLowerCase().startsWith(context.getInput()))
+                    .map(x -> x.getKey() + "=" + x.getValue())
+                    .collect(Collectors.toList());
+
+        });
 
         this.commandManager.registerCommand(new CommandCMDI(this));
         this.commandManager.enableUnstableAPI("help");

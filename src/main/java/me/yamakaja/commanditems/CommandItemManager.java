@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 import me.yamakaja.commanditems.util.CommandItemsI18N.MsgKey;
@@ -123,6 +124,8 @@ public class CommandItemManager implements Listener {
             return;
         }
 
+        Map<String, String> params = NMSUtil.getNBTStringMap(itemMeta, "params");
+
         if (itemDefinition.isConsumed()) {
             ItemStack[] contents = event.getPlayer().getInventory().getContents();
             for (int i = 0; i < contents.length; i++)
@@ -139,7 +142,7 @@ public class CommandItemManager implements Listener {
         }
 
         try {
-            this.plugin.getExecutor().processInteraction(event.getPlayer(), itemDefinition);
+            this.plugin.getExecutor().processInteraction(event.getPlayer(), itemDefinition, params);
         } catch (RuntimeException e) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Failed to process command item: " + command);
             event.getPlayer().sendMessage(MsgKey.ITEM_ERROR.get());
