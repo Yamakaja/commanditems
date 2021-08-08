@@ -9,10 +9,8 @@ import me.yamakaja.commanditems.parser.ConfigManager;
 import me.yamakaja.commanditems.util.CommandItemsI18N;
 import me.yamakaja.commanditems.util.EnchantmentGlow;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 /**

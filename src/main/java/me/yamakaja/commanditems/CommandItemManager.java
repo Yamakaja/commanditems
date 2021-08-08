@@ -4,6 +4,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
 import me.yamakaja.commanditems.data.ItemDefinition;
+import me.yamakaja.commanditems.util.CommandItemsI18N.MsgKey;
 import me.yamakaja.commanditems.util.NMSUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,11 +16,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
-
-import me.yamakaja.commanditems.util.CommandItemsI18N.MsgKey;
 
 public class CommandItemManager implements Listener {
 

@@ -1,7 +1,6 @@
 package me.yamakaja.commanditems.data.action;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import me.yamakaja.commanditems.CommandItems;
 import me.yamakaja.commanditems.data.ItemDefinition;
 import me.yamakaja.commanditems.interpreter.InterpretationContext;
 

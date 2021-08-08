@@ -1,8 +1,8 @@
 package me.yamakaja.commanditems.interpreter;
 
 import me.yamakaja.commanditems.CommandItems;
-import me.yamakaja.commanditems.data.action.Action;
 import me.yamakaja.commanditems.data.ItemDefinition;
+import me.yamakaja.commanditems.data.action.Action;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
