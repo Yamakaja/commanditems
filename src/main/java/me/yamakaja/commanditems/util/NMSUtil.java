@@ -45,8 +45,16 @@ public class NMSUtil {
             setNBTBase = nbtTagCompound.getMethod("set", String.class, nbtBase);
             getNBTBase = nbtTagCompound.getMethod("get", String.class);
             getKeys = nbtTagCompound.getMethod("getKeys");
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+        } catch (NoSuchMethodException noSuchMethodException) {
+            try {
+                setString = nbtTagCompound.getMethod("a", String.class, String.class);
+                getString = nbtTagCompound.getMethod("l", String.class);
+                setNBTBase = nbtTagCompound.getMethod("a", String.class, nbtBase);
+                getNBTBase = nbtTagCompound.getMethod("c", String.class);
+                getKeys = nbtTagCompound.getMethod("d");
+            }catch (NoSuchMethodException e){
+                e.printStackTrace();
+            }
         }
 
         try {
