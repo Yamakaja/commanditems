@@ -40,7 +40,7 @@ public class NMSUtil {
         nbtBase = getNMSClass("NBTBase", "nbt.NBTBase");
 
         try {
-            setString = nbtTagCompound.getMethod("a", String.class, String.class);
+            setString = nbtTagCompound.getMethod("setString", String.class, String.class);
             getString = nbtTagCompound.getMethod("getString", String.class);
             setNBTBase = nbtTagCompound.getMethod("set", String.class, nbtBase);
             getNBTBase = nbtTagCompound.getMethod("get", String.class);
